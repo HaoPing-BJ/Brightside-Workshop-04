@@ -2,9 +2,17 @@ pipeline {
     agent { label 'ca-brightside-ce-agent' }
     environment {
         // Scripts
-        BUILD = "./jenkins/build.sh"
+        //BUILD = "./jenkins/build.sh"
         DEPLOY = "./jenkins/deploy.sh"
         TEST = "./jenkins/test.sh"
+           //Endeavor Details
+        ENDEVOR_CONNECTION="--port 6002 --protocol http --recect-unauthorized false"
+        ENDEVOR_LOCATION="--instance ENDEVOR --env DEV --sys MARBLES --sub MARBLES --stage-number 1 --ccid JENK04 --comment JENK04"
+        ENDEVOR="$ENDEVOR_CONNECTION $ENDEVOR_LOCATION"
+        //mainframe host ip address
+        ZOWE_OPT_HOST=credentials('eosHost');
+        
+        
     }
     stages {
         stage('local setup') {
