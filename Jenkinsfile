@@ -2,7 +2,7 @@ pipeline {
     agent { label 'ca-brightside-ce-agent' }
     environment {
         // Scripts
-        BUILD = "./jenkins/build.sh"
+        //BUILD = "./jenkins/build.sh"
         DEPLOY = "./jenkins/deploy.sh"
         TEST = "./jenkins/test.sh"
     }
