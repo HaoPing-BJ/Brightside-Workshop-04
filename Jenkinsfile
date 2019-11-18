@@ -27,9 +27,9 @@ pipeline {
         }
         stage('build') {
             steps {
-                sh "chmod +x $BUILD && $BUILD"
+                // sh "chmod +x $BUILD && $BUILD"
                 //ZOWE_OPT_USERNAME & ZOWE_OPT_PASSWORD are used to interact with Endevor 
-                // withCredentials([usernamePassword(credentialsId: 'eosCreds', usernameVariable: 'ZOWE_OPT_USER', passwordVariable: 'ZOWE_OPT_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'eosCreds', usernameVariable: 'ZOWE_OPT_USER', passwordVariable: 'ZOWE_OPT_PASSWORD')]) {
                 //    
                 // }
             }
