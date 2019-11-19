@@ -77,6 +77,48 @@ gulp.task('copy-load', 'Copy LOADLIB to test environment', function (callback){
   });
 });
 
+gulp.task('copy-dbrm', 'Copy DBRM to test environment', function (callback){
+  var fmp = (typeof process.env.FMP === "undefined") ? "" : process.env.FMP,
+      command = 'bright file-master-plus copy data-set "PRODUCT.NDVR.MARBLES.MARBLES.D1.DBRMLIB" "BRIGHT.MARBLES.DBRMLIB" -m MARBLE04 ' + fmp;
+
+  cmd.get(command, function (err, data, stderr) {
+    if(err){
+      callback(err);
+    } else if (stderr){
+      callback(new Error("\nCommand:\n" + command + "\n" + stderr + "Stack Trace:"));
+    } else {
+      callback();
+    }
+  });
+});
+
+gulp.task('bind-n-grant', 'Bind & Grant Job', function (callback){
+  var fmp = (typeof process.env.FMP === "undefined") ? "" : process.env.FMP,
+      command = 'bright jobs submit data-set "cust004.MARBLES.JCL(MARBIND)" --rff jobid --rft string';
+
+  // Submit job, await completion
+  cmd.get(command, function (err, data, stderr) {
+    if(err){
+      callback(err);
+    } else if (stderr){
+      callback(new Error("\nCommand:\n" + command + "\n" + stderr + "Stack Trace:"));
+    } else {
+      // Strip unwanted whitespace/rewline
+      var jobId = data.trim();
+
+      // Await the jobs completion
+      awaitJobCompletion(jobId, 4, function(err){
+        if(err){
+          callback(err);
+        } else{
+          callback();
+        }
+      });
+    }
+  });
+});
+
+
 gulp.task('link-cobol', 'Build COBOL element link', function (callback) {
   var endevor = (typeof process.env.ENDEVOR === "undefined") ? "" : process.env.ENDEVOR,
       command = "bright endevor generate element MARBLE04 --type LNK --override-signout --maxrc 0 " + endevor;
