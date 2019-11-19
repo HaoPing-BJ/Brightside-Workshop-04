@@ -7,7 +7,7 @@ pipeline {
         TEST = "./jenkins/test.sh"
 
         // Endeavor Details 
-        ENDEVOR_CONNECTION="--port 6002 --protocol http --recect-unauthorized false"
+        ENDEVOR_CONNECTION="--port 6002 --protocol http --reject-unauthorized false"
 
           
 
