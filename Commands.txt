@@ -45,6 +45,7 @@ bright profiles create cics pe02brs-cust004 --host 35.192.238.214  --port 6000 -
 bright cics refresh program "MARBLE04 --console-name 
 bright console issue command "F CICSTRN1,MB04 CRE GREEN 1 2" --console-name CUST004
 
-command for clear the local catch for GITHUB user/password:
+##command for clear the local catch for GITHUB user/password:
 git credential-manager uninstall
 
+                
