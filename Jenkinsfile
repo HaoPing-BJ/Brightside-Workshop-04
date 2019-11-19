@@ -6,7 +6,7 @@ pipeline {
         DEPLOY = "./jenkins/deploy.sh"
         TEST = "./jenkins/test.sh"
 
-        // Endeavor Details 1
+        // Endeavor Details 
         ENDEVOR_CONNECTION="--port 6002 --protocol http --recect-unauthorized false"
 
           
