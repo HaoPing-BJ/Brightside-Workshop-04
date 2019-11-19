@@ -136,7 +136,7 @@ function getMarbleQuantity(color, callback) {
 */
 function updateMarble(color, quantity, callback) {
   cmd.get(
-    'bright console issue command "F CICSTRN1,MB04 UPD ' + color + " " + quantity + '" --cn CUST004',
+    'bright console issue command "F CICSTRN1,MB04 UPD ' + color + " " + quantity +   '" --cn CUST004',
     function (err, data, stderr) {
       typeof callback === 'function' && callback(err, data, stderr);
     }
@@ -189,16 +189,17 @@ describe('Marbles', function () {
 
     it('should create a single marble', function (done) {
       // Create marble
-      createMarble(COLOR, 1, function(err, data, stderr){
+      createMarble(COLOR, 1, 1, function(err, data, stderr){
         // Strip unwanted whitespace/newline
         data = data.trim();
         assert.equal(data, "+SUCCESS", "Unsuccessful marble creation");
 
-        getMarbleQuantity(COLOR, function(err, quantity){
+        getMarbleQuantity(COLOR, function(err, quantity, cost){
           if(err){
             throw err;
           }
           assert.equal(quantity, 1, "Inventory is not as expected");
+          assert.equal(cost, 1, "Cost is not as expected");
           done();
         });
       });
@@ -206,17 +207,18 @@ describe('Marbles', function () {
 
     it('should not create a marble of a color that already exists', function (done) {
       // Create marble
-      createMarble(COLOR, 2, function(err, data, stderr){
+      createMarble(COLOR, 2, 2, function(err, data, stderr){
         // Strip unwanted whitespace/newline
         data = data.trim();
         assert.equal(data, "+MARB002E Color (" + COLOR + ") already exists, UPDate or DELete it.", "Unexpected marble creation or incorrect error message");
 
         // Confirm quantity is unchanged
-        getMarbleQuantity(COLOR, function(err, quantity){
+        getMarbleQuantity(COLOR, function(err, quantity, cost){
           if(err){
             throw err;
           }
           assert.equal(quantity, 1, "Inventory is not as expected");
+          assert.equal(cost, 1, "Cost is not as expected");
           done();
         });
       });
