@@ -53,11 +53,12 @@ function awaitJobCompletion(jobId, callback, tries = 30, wait = 1000) {
 * Creates a Marble with an initial quantity
 * @param {string}           color        color of Marble to create
 * @param {number}           [quantity=1] quantity of Marbles to initially create
+* @param {number}           [cost=1] cost of Marbles to initially create
 * @param {nodeCmdCallback}  [callback]   function to call after completion, callback(err, data, stderr)
 */
-function createMarble(color, quantity=1, callback) {
+function createMarble(color, quantity=1, cost=1, callback) {
   cmd.get(
-    'bright console issue command "F CICSTRN1,MB04 CRE ' + color + " " + quantity + '" --cn CUST004',
+    'bright console issue command "F CICSTRN1,MB04 CRE ' + color + " " + quantity + " " + cost + '" --cn CUST004',
     function (err, data, stderr) {
       typeof callback === 'function' && callback(err, data, stderr);
     }
@@ -114,7 +115,8 @@ function getMarbleQuantity(color, callback) {
                     //found should look like nn_| COLOR       |       QUANTITY |        COST |
                     var row = found[0].split("|");
                     var quantity = Number(row[2]);
-                    callback(err, quantity);
+                    var cost = Number(row[3]);
+                    callback(err, quantity, cost);
                   }
                 }
               }
