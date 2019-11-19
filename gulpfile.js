@@ -134,4 +134,21 @@ gulp.task('link-cobol', 'Build COBOL element link', function (callback) {
   });
 });
 
+gulp.task('cics-refresh', 'Refresh(new copy) MARBLE04 CICS Program', function (callback) {
+  var cics = (typeof process.env.CICS === "undefined") ? "" : process.env.CICS,
+      command = 'bright cics refresh program "MARBLE04" ' + cics;
+
+  cmd.get(command, function (err, data, stderr) {
+    if(err){
+      callback(err);
+    } else if (stderr){
+      callback(new Error("\nCommand:\n" + command + "\n" + stderr + "Stack Trace:"));
+    } else {
+      callback();
+    }
+  });
+});
+
 gulp.task('build','Build program', gulpSequence('build-cobol','link-cobol'));
+
+gulp.task('deploy','Deploy program', gulpSequence('copy-dbrm','copy-load','bind-n-grant', 'cics-refresh'));
