@@ -62,6 +62,21 @@ gulp.task('build-cobol', 'Build COBOL element', function (callback) {
   });
 });
 
+gulp.task('copy-load', 'Copy LOADLIB to test environment', function (callback){
+  var fmp = (typeof process.env.FMP === "undefined") ? "" : process.env.FMP,
+      command = 'bright file-master-plus copy data-set "PRODUCT.NDVR.MARBLES.MARBLES.D1.LOADLIB" "CICS.TRAIN.MARBLES.LOADLIB" -m MARBLE04 ' + fmp;
+
+  cmd.get(command, function (err, data, stderr) {
+    if(err){
+      callback(err);
+    } else if (stderr){
+      callback(new Error("\nCommand:\n" + command + "\n" + stderr + "Stack Trace:"));
+    } else {
+      callback();
+    }
+  });
+});
+
 gulp.task('link-cobol', 'Build COBOL element link', function (callback) {
   var endevor = (typeof process.env.ENDEVOR === "undefined") ? "" : process.env.ENDEVOR,
       command = "bright endevor generate element MARBLE04 --type LNK --override-signout --maxrc 0 " + endevor;
