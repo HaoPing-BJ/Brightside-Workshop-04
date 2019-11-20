@@ -51,7 +51,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                //sh "chmod +x $DEPLOY && $DEPLOY"
+                //sh "chmod +x $DEPLOY && $DEPLOY "
                 //ZOWE_OPT_USER & ZOWE_OPT_PASSWORD are used to interact with z/OSMF and CICS
                  withCredentials([usernamePassword(credentialsId: 'eosCreds', usernameVariable: 'ZOWE_OPT_USER', passwordVariable: 'ZOWE_OPT_PASSWORD')]) {
                      //ZOWE_OPT_PASS is used by FMP plugin
